@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  TECNICO
+  ADMIN
+  PACIENTE
+}
+
+model User {
+  id            String          @id @default(uuid())
+  name          String
+  email         String          @unique
+  health_status String
+  nip           String
+  born_at       DateTime
+  phone         Int
+  adress        String
+  created_at    DateTime        @default(now())
+  image_path    String?
+  role          Role            @default(PACIENTE)
+  notification  notification[]
+  messages      messages[]
+  unit          Unit            @relation(fields: [unitId], references: [id])
+  unitId        String
+  health_statu health_status[]
+ 
+
+  @@map("users")
+}
+
+model Unit {
+  id     String @id @default(uuid())
+  name   String
+  adress String
+  User   User[]
+
+  @@map("unit")
+}
+
+model notification {
+
+  id         Int      @id @default(autoincrement())
+  status     Boolean
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  @@map("notif")
+}
+
+model messages {
+  id        Int      @id @default(autoincrement())
+  content   String
+  send_at   DateTime @default(now())
+  User      User     @relation(fields: [sender_Id], references: [id])
+  sender_Id String
+
+  @@map("massages")
+}
+
+model health_status {
+  id             Int      @id @default(autoincrement())
+  created_at     DateTime @default(now())
+  blood_pressure Float
+  blood_glucose  Float
+  cholesterol    Float
+  weigth         Float
+  triglycerides  Float
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+}
