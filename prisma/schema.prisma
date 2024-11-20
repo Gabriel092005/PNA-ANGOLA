@@ -23,29 +23,22 @@ model User {
   id            String          @id @default(uuid())
   name          String
   email         String          @unique
+  status String   //para verificar se e hipertenso ou dibetico
   nip           String
   born_at       DateTime
-  phone         Int
+  phone         String
+  updated_at  DateTime    @default(now())
   adress        String
   created_at    DateTime        @default(now())
   image_path    String?
   role          Role            @default(PACIENTE)
   notification  notification[]
   messages      messages[]
-  unit          Unit            @relation(fields: [unitId], references: [id])
-  unitId        String
-  health_statu health_status[]
+  unit_name String
+  unit_adress String
+  health_status health_status[]
  
   @@map("users")
-}
-
-model Unit {
-  id     String @id @default(uuid())
-  name   String
-  adress String
-  User   User[]
-
-  @@map("unit")
 }
 
 model notification {

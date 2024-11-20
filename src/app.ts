@@ -4,6 +4,8 @@ import { ZodError } from "zod";
 import { error } from "console";
 import { env } from "./Env";
 import fastifyJwt from "@fastify/jwt";
+import { UserRoutes } from "./http/controllers/user/routes";
+
 
 
 
@@ -23,6 +25,8 @@ app.register(fastifyJwt,{
 }) 
 
 app.register(fastifycookie)
+app.register(UserRoutes)
+
 
 app.setErrorHandler((Error,request,reply)=>{
 

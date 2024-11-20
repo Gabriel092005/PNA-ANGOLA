@@ -1,9 +1,10 @@
-import { Prisma, User } from "@prisma/client";
+import {Prisma, User } from "@prisma/client";
 
 
 export interface usersRepository{
     
     findById(id : string): Promise <User | null> 
     findByEmail( email : string) : Promise <User | null>
-    Create(data:Prisma.UserCreateInput):Promise<User>
+    findByNip(nip:string):Promise<User|null>
+    create(data:Prisma.UserUncheckedCreateInput): Promise<User>;
 }
