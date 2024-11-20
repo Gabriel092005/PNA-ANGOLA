@@ -23,7 +23,6 @@ model User {
   id            String          @id @default(uuid())
   name          String
   email         String          @unique
-  health_status String
   nip           String
   born_at       DateTime
   phone         Int
@@ -37,7 +36,6 @@ model User {
   unitId        String
   health_statu health_status[]
  
-
   @@map("users")
 }
 
