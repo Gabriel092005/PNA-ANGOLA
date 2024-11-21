@@ -3,6 +3,21 @@ import { usersRepository } from "./prisma/prisma-users-repository";
 import { prisma } from "@/lib/prisma";
 
 export class PrismaUserRepository implements usersRepository{
+ async Searchany(query:string){
+  console.log(query)
+     const users = await prisma.user.findMany(
+      {
+    where:{
+      status:{
+        contains:query
+      }
+     },take:10
+    }
+    )
+
+     return users
+    
+  }
   async create(data: Prisma.UserUncheckedCreateInput){
         const users = await prisma.user.create({
           data
