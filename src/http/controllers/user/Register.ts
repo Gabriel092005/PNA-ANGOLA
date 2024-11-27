@@ -27,7 +27,7 @@ export async function Register(req:FastifyRequest,res:FastifyReply){
     try {
         const registerUseCase = makeRegisterUseCase()
 
-        await registerUseCase.execute({
+       const{User} = await registerUseCase.execute({
              name,
              adress,
              born_at,
@@ -39,6 +39,7 @@ export async function Register(req:FastifyRequest,res:FastifyReply){
               unit_name,
              image_path
         })
+        return res.status(201).send({User})
     } catch (error:any) {
         if(error instanceof  UserAreadyExistsError){
             return res.status(409).send({message:error.message})

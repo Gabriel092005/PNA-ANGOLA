@@ -3,8 +3,9 @@ import { User } from "@prisma/client";
 
 interface FetchUsersUseCaseRequest{
 
-    query:string
-    // page:number
+    query:string|undefined
+    role:string|undefined
+    page:number
 }
 interface FetchUsersUseCaseResponse{
    Users:User[]
@@ -12,8 +13,9 @@ interface FetchUsersUseCaseResponse{
 
 export class FetchUsersUseCase{
     constructor (private usersRepository:usersRepository){ }
-    async execute({query}:FetchUsersUseCaseRequest):Promise<FetchUsersUseCaseResponse>{
-        const Users = await this.usersRepository.Searchany(query)
+    async execute({query,page,role}:FetchUsersUseCaseRequest):Promise<FetchUsersUseCaseResponse>{
+        const Users = await this.usersRepository.Searchany(query,page)
+
         return{
             Users
         }

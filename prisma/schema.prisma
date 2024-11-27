@@ -18,47 +18,52 @@ enum Role {
   ADMIN
   PACIENTE
 }
-
 model User {
-  id            String          @id @default(uuid())
-  name          String
-  email         String          @unique
-  status String   //para verificar se e hipertenso ou dibetico
-  nip           String
-  born_at       DateTime
-  phone         String
-  updated_at  DateTime    @default(now())
-  adress        String
-  created_at    DateTime        @default(now())
-  image_path    String?
-  role          Role            @default(PACIENTE)
-  notification  notification[]
-  messages      messages[]
-  unit_name String
-  unit_adress String
-  health_status health_status[]
- 
-  @@map("users")
+  id               String          @id @default(uuid()) // UUID para identificação única
+  name             String
+  email            String          @unique
+  status           String          // Para verificar se é hipertenso ou diabético
+  nip              String
+  born_at          DateTime
+  phone            String
+  updated_at       DateTime        @default(now())
+  adress           String
+  created_at       DateTime        @default(now())
+  image_path       String?
+  role             Role            @default(PACIENTE) // Enum para papéis no sistema
+  notification     notification[]
+  sent_messages    messages[]      @relation("sender") // Mensagens enviadas
+  received_messages messages[]     @relation("receiver") // Mensagens recebidas
+
+  unit_name        String
+  unit_adress      String
+  health_status    health_status[]
+
+  @@map("users") // Nome correto da tabela no banco
 }
 
-model notification {
 
+model notification {
   id         Int      @id @default(autoincrement())
-  status     Boolean
+  status     Boolean @default(false)
   created_at DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
   userId     String
+
   @@map("notif")
 }
 
 model messages {
-  id        Int      @id @default(autoincrement())
-  content   String
-  send_at   DateTime @default(now())
-  User      User     @relation(fields: [sender_Id], references: [id])
-  sender_Id String
+  id          Int      @id @default(autoincrement())
+  content     String
+  send_at     DateTime @default(now())
+  senderId    String
+  status Boolean @default(false)
+  receiverId  String
+  sender      User     @relation("sender", fields: [senderId], references: [id])
+  receiver    User     @relation("receiver", fields: [receiverId], references: [id])
 
-  @@map("massages")
+  @@map("messages") // Nome correto da tabela no banco
 }
 
 model health_status {
@@ -70,5 +75,5 @@ model health_status {
   weigth         Float
   triglycerides  Float
   user           User     @relation(fields: [userId], references: [id])
-  userId         String
+  userId String
 }

@@ -6,17 +6,24 @@ import { z } from "zod";
 
 export async function Fetch(req:FastifyRequest,res:FastifyReply){
 
-    const RegisterBodySchema = z.object({
-        query:z.string()
+    const SearchanyBodySchema = z.object({
+        page:z.string(),
+        role:z.string().optional(),
+        query:z.string().optional()
     })
-    const {query} = RegisterBodySchema.parse(req.params)
-    console.log(query)
+    const {query,page,role} = SearchanyBodySchema.parse(req.query)
+    console.log(req.query)
+    const pageNumber = Number(page);
+    if (isNaN(pageNumber) || pageNumber < 1) {
+      return res.status(400).send({ message: "Invalid page number" });
+    }
     try {
         const UseCase = makeFetchUseCase()
 
         const{Users} = await UseCase.execute({
-            // page,
-            query
+            page:pageNumber,
+            query,
+            role:role
         })
         return res.status(200).send(Users)
     } catch (error) {

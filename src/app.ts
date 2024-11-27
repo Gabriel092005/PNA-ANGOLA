@@ -5,8 +5,9 @@ import { error } from "console";
 import { env } from "./Env";
 import fastifyJwt from "@fastify/jwt";
 import { UserRoutes } from "./http/controllers/user/routes";
-
-
+import { HealthRoutes } from "./http/controllers/health_status/routes";
+import { MessagesRoutes } from "./http/controllers/messages/routes";
+import { NotifRoutes } from "./http/controllers/notifications/routes";
 
 
 
@@ -26,6 +27,9 @@ app.register(fastifyJwt,{
 
 app.register(fastifycookie)
 app.register(UserRoutes)
+app.register(HealthRoutes)
+app.register(MessagesRoutes)
+app.register(NotifRoutes)
 
 
 app.setErrorHandler((Error,request,reply)=>{

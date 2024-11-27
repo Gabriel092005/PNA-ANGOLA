@@ -9,22 +9,22 @@ interface AuthenticateUseCaseRequest{
 }
 
 interface AuthenticateUseCaseResponse{
-    User:User
+    user:User
 }
 
 export class AuthenticateUseCase{
     constructor(private usersRepository:usersRepository){}
     async execute({ name,nip}:AuthenticateUseCaseRequest):Promise<AuthenticateUseCaseResponse>
     {
-      const User = await this.usersRepository.findByNip(nip)
+      const user = await this.usersRepository.findByNip(nip)
  
     
-      if(!User || User?.name !== name){
+      if(!user){
         throw new invalidCredentialsError()
       }
 
       return{
-        User
+        user
       }
     }
 }

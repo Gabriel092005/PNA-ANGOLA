@@ -24,7 +24,7 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "notif" (
     "id" SERIAL NOT NULL,
-    "status" BOOLEAN NOT NULL,
+    "status" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
 
@@ -32,13 +32,15 @@ CREATE TABLE "notif" (
 );
 
 -- CreateTable
-CREATE TABLE "massages" (
+CREATE TABLE "messages" (
     "id" SERIAL NOT NULL,
     "content" TEXT NOT NULL,
     "send_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "sender_Id" TEXT NOT NULL,
+    "senderId" TEXT NOT NULL,
+    "status" BOOLEAN NOT NULL DEFAULT false,
+    "receiverId" TEXT NOT NULL,
 
-    CONSTRAINT "massages_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "messages_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -62,7 +64,10 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 ALTER TABLE "notif" ADD CONSTRAINT "notif_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "massages" ADD CONSTRAINT "massages_sender_Id_fkey" FOREIGN KEY ("sender_Id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "messages" ADD CONSTRAINT "messages_senderId_fkey" FOREIGN KEY ("senderId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "messages" ADD CONSTRAINT "messages_receiverId_fkey" FOREIGN KEY ("receiverId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "health_status" ADD CONSTRAINT "health_status_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
