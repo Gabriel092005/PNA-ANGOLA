@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 
 export class PrismaNotificatiosRepository implements NotificationsRepository{
-  async  GenerateNotification(receiverId:string){
+  async GenerateNotification(receiverId:string){
          const notification = await prisma.notification.create({
             data:{
                 status:false,

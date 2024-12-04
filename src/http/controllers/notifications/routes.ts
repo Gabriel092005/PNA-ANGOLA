@@ -3,6 +3,6 @@ import { Fetchnotifications } from "./fetch-notifications";
 
 export async function NotifRoutes(app:FastifyInstance){
 
-    app.get("/notif/:id",Fetchnotifications)
+    app.get("/notif/:userId",Fetchnotifications)
 
 }

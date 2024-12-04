@@ -7,13 +7,14 @@ export async function Fetchnotifications(req:FastifyRequest,res:FastifyReply){
  
 
     try {
-        const fetchAllNotificationSchemaParams = z.object({
+        const FetchShemaParams=z.object({
             userId:z.string()
         })
-        
-        const {userId} = fetchAllNotificationSchemaParams.parse(req.params)
 
         console.log(req.params)
+
+        const { userId } = FetchShemaParams.parse(req.params)
+
 
         const usecase = await makeFetchAllNotifications()
         const {notification} = await usecase.execute({

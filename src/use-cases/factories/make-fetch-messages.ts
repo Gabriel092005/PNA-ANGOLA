@@ -5,6 +5,8 @@ import { FetchMessagesUseCase } from "../fetch-messages";
 export function makeFetchMessages(){
     // const usersRepository =  new PrismaUserRepository()
     const messagesRepository = new PrismaMessagesRepository()
-    const usecase = new FetchMessagesUseCase(messagesRepository)
+    const usersRepository = new PrismaUserRepository()
+
+    const usecase = new FetchMessagesUseCase(messagesRepository,usersRepository)
     return usecase
 }

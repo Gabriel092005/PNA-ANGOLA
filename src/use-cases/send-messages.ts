@@ -38,7 +38,7 @@ export class SendMessageUseCase {
         }
         const name = data.name
         const  messageContext = ` O  ${name} enviou-te uma mensagem`
-      this.notificationsRepository.GenerateNotification(senderId)
+      this.notificationsRepository.GenerateNotification(receiverId)
 
     if(!SenderId || !ReceiverId){
         throw new resourceNotFoundError()
