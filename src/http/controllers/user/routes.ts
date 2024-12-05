@@ -7,6 +7,7 @@ import { verifyJWT } from "../middleware/verify-jwt";
 import { Delete } from "./delete";
 import { techician } from "./fetch-technician";
 import { GetPacientMetrics } from "./pacient-metrics";
+import { fetchbyProvince } from "./fetchusersByProvince";
 
 
 
@@ -20,5 +21,6 @@ export async function UserRoutes(app:FastifyInstance){
     app.get('/users/techician/:role',techician)
     app.delete('/users/delete/:id',Delete)
     app.get('/users/metrics',GetPacientMetrics)
+    app.get('/users/province/:query=query',fetchbyProvince)
 
 }

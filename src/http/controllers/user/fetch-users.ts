@@ -12,7 +12,7 @@ export async function Fetch(req:FastifyRequest,res:FastifyReply){
         query:z.string().optional()
     })
     const {query,page,role} = SearchanyBodySchema.parse(req.query)
-    console.log(req.query)
+    console.log(query)
     const pageNumber = Number(page);
     if (isNaN(pageNumber) || pageNumber < 1) {
       return res.status(400).send({ message: "Invalid page number" });
@@ -22,7 +22,7 @@ export async function Fetch(req:FastifyRequest,res:FastifyReply){
 
         const{Users} = await UseCase.execute({
             page:pageNumber,
-            query,
+            query:query,
             role:role
         })
         return res.status(200).send(Users)

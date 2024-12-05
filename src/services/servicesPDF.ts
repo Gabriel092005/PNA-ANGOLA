@@ -1,14 +1,13 @@
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'; // Importando o rgb para cores
 
 export class PdfService {
-  async generatePdf(title: string, content: string): Promise<Buffer> {
+  async generatePdf(title: string, content: string){
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([600, 1000]);
     const {height } = page.getSize();
 
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-
    
     const titleSize = 18;
     const contentSize = 12;

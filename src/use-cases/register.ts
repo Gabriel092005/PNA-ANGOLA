@@ -5,15 +5,18 @@ import { UserAreadyExistsError } from "./erros/user-already-exists"
 
 interface RegisterUserRequest{
    name:string,
-   email:any
-   status:string
+   status:string|undefined
+   email:string|undefined
    nip:string
+   province:string
+   municipality:string|undefined
+   unit:string|undefined
+   bi:string|undefined
    born_at:string
    phone:any
-   adress:string
+   distrit:string|undefined
    image_path:any
-   unit_adress:string
-   unit_name:string
+ 
 
 }
 
@@ -23,26 +26,26 @@ interface RegisterUserResponse{
 
 export class RegisterUserUseCase{
     constructor(private UsersRepository:usersRepository){}
-    async execute({adress,image_path, born_at,email,nip,name,phone,status,unit_adress,unit_name}:RegisterUserRequest):Promise<RegisterUserResponse>{
-           const userWithSameEmail = await this.UsersRepository.findByEmail(email)
-           if(userWithSameEmail){
-             throw new UserAreadyExistsError()
-           }
+    async execute({image_path,email, born_at,nip,name,phone,status,distrit,municipality,bi,province,unit}:RegisterUserRequest):Promise<RegisterUserResponse>{
+        
            const userWithSameNip = await this.UsersRepository.findByNip(nip)
            if(userWithSameNip){
             throw new UserAreadyExistsError()
            }   
            const User = await this.UsersRepository.create({
             name,
-            adress,
             born_at,
+            unidade:unit,
+            bi,
             email,
+            province,
+            municipality,
+            distrit,
             phone,
             nip,
-             status,
+            status,
             image_path,
-                unit_adress,
-                unit_name
+        
       
            }
           

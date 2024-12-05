@@ -16,27 +16,27 @@ enum Role {
 model User {
   id                String         @id @default(uuid()) // UUID para identificação única
   name              String
-  email             String         @unique
-  status            String // Para verificar se é hipertenso ou diabético
-  nip               String
+  email             String?
+  bi               String?
+  status            String?// Para verificar se é hipertenso ou diabético
+  nip               String?
   born_at           DateTime
-  phone             String
+  province          String
+  municipality      String?
+  distrit           String?
+ unidade       String?
+  phone             String?
   updated_at        DateTime       @default(now())
-  adress            String
   created_at        DateTime       @default(now())
   image_path        String?
   role              Role           @default(PACIENTE) // Enum para papéis no sistema
   notification      notification[]
   sent_messages     messages[]     @relation("sender") // Mensagens enviadas
   received_messages messages[]     @relation("receiver") // Mensagens recebidas
-
-  unit_name     String
-  unit_adress   String
   health_status health_status[]
-  unit          unit            @relation(fields: [unitId], references: [id])
-  unitId        String
 
-  @@map("users") // Nome correto da tabela no banco
+
+  @@map("users") 
 }
 
 model notification {
@@ -74,10 +74,3 @@ model health_status {
   userId         String
 }
 
-model unit {
-  id       String @unique @default(uuid())
-  name     String
-  province String
-  distrit  String
-  User User[]
-}

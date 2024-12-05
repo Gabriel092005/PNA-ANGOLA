@@ -1,8 +1,18 @@
-import {Prisma } from "@prisma/client";
+import {Prisma, User } from "@prisma/client";
 import { usersRepository } from "./prisma/prisma-users-repository";
 import { prisma } from "@/lib/prisma";
 
 export class PrismaUserRepository implements usersRepository{
+ async findUsersByProvince(province: string){
+     const users = await prisma.user.findMany({
+      where:{
+        province:{
+          contains:province
+        }
+      }
+     })
+     return users
+    }
  async getPatientsByDateRange(startDate: string, endDate: string){
        const patient = await prisma.user.findMany({
         where:{
@@ -73,7 +83,8 @@ async  findAllTechnician(role:string,) {
     return null
   }
  
- async Searchany(query:string|undefined,page:number){
+ async Searchany(query:string,page:number){
+  console.log(query)
 
 
   const users = await prisma.user.findMany({
@@ -99,7 +110,7 @@ async  findAllTechnician(role:string,) {
    
     
   }
-  async create(data: Prisma.UserUncheckedCreateInput){
+  async create(data: Prisma.UserCreateInput){
         const users = await prisma.user.create({
           data
         })
@@ -107,7 +118,7 @@ async  findAllTechnician(role:string,) {
    }
 
 
-   async findByNip(nip: string){
+   async findByNip(nip: string|undefined){
       const user = await prisma.user.findFirst({
         where:{
             nip
@@ -125,16 +136,11 @@ async  findAllTechnician(role:string,) {
       return users
 
     }
-   async findByEmail(email: string){
-      const users = await prisma.user.findUnique({
-        where:{
-            email
-        }
-      })
-      return users
+
+
     
          
-    }
+    
 
 
 }

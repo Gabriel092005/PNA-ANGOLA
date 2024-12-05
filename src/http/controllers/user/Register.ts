@@ -9,19 +9,21 @@ export async function Register(req:FastifyRequest,res:FastifyReply){
 
     const RegisterBodySchema = z.object({
         name : z.string(),
-        email : z.string().email(),
+        email : z.string().email().optional(),
         nip:z.string(),
-        adress:z.string(),
-        status:z.string(),
+        province:z.string(),
+        status:z.string().optional(),
+        bi:z.string().optional(),
         phone:z.string(),
         born_at:z.string(),
-        unit_name:z.string(),
-        unit_adress:z.string(),
+        unit:z.string().optional(),
+        municipality:z.string().optional(),
+        distrit:z.string().optional(),
         image_path:z.string().nullable(),
       
 
     })
-    const {image_path,status,name,adress,born_at,email,nip,phone,unit_adress,unit_name} = RegisterBodySchema.parse(req.body)
+    const {image_path,status,name,born_at,email,nip,phone,distrit,municipality,province,unit,bi} = RegisterBodySchema.parse(req.body)
 
 
     try {
@@ -29,14 +31,16 @@ export async function Register(req:FastifyRequest,res:FastifyReply){
 
        const{User} = await registerUseCase.execute({
              name,
-             adress,
              born_at,
              email,
              nip,
              phone,
               status,
-              unit_adress,
-              unit_name,
+              unit,
+               bi,
+               distrit,
+               municipality,
+             province,
              image_path
         })
         return res.status(201).send({User})

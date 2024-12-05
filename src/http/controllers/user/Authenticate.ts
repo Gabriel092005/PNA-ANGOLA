@@ -8,17 +8,17 @@ export async function Authenticate(request: FastifyRequest, reply: FastifyReply)
 
     const AuthenticateBodySchema = z.object({
         nip:z.string(),
-        name:z.string()
+        bi:z.string().optional()
     });
 
-    const {name,nip } = AuthenticateBodySchema.parse(request.body);
+    const {bi,nip } = AuthenticateBodySchema.parse(request.body);
     console.log(request.body)
 
     try {
         const authenticateUseCase = makeAuthenticateUseCase();
         
         const { user } = await authenticateUseCase.execute({
-         name,
+         bi,
          nip
         });
         const token = await reply.jwtSign(

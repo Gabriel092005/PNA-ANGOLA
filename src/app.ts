@@ -3,6 +3,7 @@ import fastifycookie from '@fastify/cookie';
 import fastifyJwt from '@fastify/jwt';
 import { ZodError } from 'zod';
 import { env } from './Env';
+import cors from '@fastify/cors';
 
 import { UserRoutes } from './http/controllers/user/routes';
 import { HealthRoutes } from './http/controllers/health_status/routes';
@@ -10,9 +11,7 @@ import { MessagesRoutes } from './http/controllers/messages/routes';
 import { NotifRoutes } from './http/controllers/notifications/routes';
 import { GeneratePDFRoutes } from './http/controllers/report/routes';
 
-export const app = fastify({
-  logger: true,
-});
+export const app = fastify();
 
 // Configuração do JWT
 app.register(fastifyJwt, {
@@ -25,6 +24,11 @@ app.register(fastifyJwt, {
     expiresIn: '10m',
   },
 });
+
+app.register(cors,{
+    origin:'http://localhost:5173',
+    credentials:true
+})
 
 // Registro de plugins e rotas
 app.register(fastifycookie);
