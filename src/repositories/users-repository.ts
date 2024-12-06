@@ -1,18 +1,23 @@
 import {Prisma, User } from "@prisma/client";
 import { usersRepository } from "./prisma/prisma-users-repository";
 import { prisma } from "@/lib/prisma";
-
 export class PrismaUserRepository implements usersRepository{
- async findUsersByProvince(province: string){
-     const users = await prisma.user.findMany({
-      where:{
-        province:{
-          contains:province
-        }
-      }
-     })
-     return users
-    }
+ async findUsersFilters(province?: string, municipality?: string, unidade?: string, nip?: string, page?: string) {
+
+  const users = await prisma.user.findMany({
+                where:{
+                  ...(province && {province:{contains:province}}),
+                  ...(municipality && {municipality:{contains:municipality}}),
+                  ...(unidade && {unidade:{contains:unidade}}),
+                  ...(nip && {nip:{contains:nip}}),
+                  ...({role:{equals:"PACIENTE"}})
+                  
+                },take:5,
+               
+            })
+            return users
+  }
+
  async getPatientsByDateRange(startDate: string, endDate: string){
        const patient = await prisma.user.findMany({
         where:{
