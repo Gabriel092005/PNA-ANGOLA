@@ -14,7 +14,7 @@ interface RegisterUserRequest{
    bi:string|undefined
    born_at:string
    phone:any
-   distrit:string|undefined
+   patente:string|undefined
    image_path:any
  
 
@@ -26,7 +26,7 @@ interface RegisterUserResponse{
 
 export class RegisterUserUseCase{
     constructor(private UsersRepository:usersRepository){}
-    async execute({image_path,email, born_at,nip,name,phone,status,distrit,municipality,bi,province,unit}:RegisterUserRequest):Promise<RegisterUserResponse>{
+    async execute({image_path,email, born_at,nip,name,phone,status,patente,municipality,bi,province,unit}:RegisterUserRequest):Promise<RegisterUserResponse>{
         
            const userWithSameNip = await this.UsersRepository.findByNip(nip)
            if(userWithSameNip){
@@ -40,7 +40,7 @@ export class RegisterUserUseCase{
             email,
             province,
             municipality,
-            distrit,
+            patente,
             phone,
             nip,
             status,

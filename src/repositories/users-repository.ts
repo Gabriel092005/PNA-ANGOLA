@@ -2,8 +2,17 @@ import {Prisma, User } from "@prisma/client";
 import { usersRepository } from "./prisma/prisma-users-repository";
 import { prisma } from "@/lib/prisma";
 export class PrismaUserRepository implements usersRepository{
- async findUsersFilters(province?: string, municipality?: string, unidade?: string, nip?: string, page?: string) {
-
+  
+  async findTotalPacientCount(){
+    const TotalPacient = await prisma.user.count({where:{role:'PACIENTE'}})
+    return TotalPacient
+      
+  }
+ async findUsersFilters(province?: string, municipality?: string, unidade?: string, nip?: string, page?:string) {
+   if(!page){
+     throw new Error()
+    }
+    
   const users = await prisma.user.findMany({
                 where:{
                   ...(province && {province:{contains:province}}),
@@ -11,9 +20,12 @@ export class PrismaUserRepository implements usersRepository{
                   ...(unidade && {unidade:{contains:unidade}}),
                   ...(nip && {nip:{contains:nip}}),
                   ...({role:{equals:"PACIENTE"}})
-                  
                 },take:5,
-               
+                orderBy:{
+                  created_at:'desc'
+                },
+                skip:(parseInt(page)-1)*5
+                
             })
             return users
   }
@@ -55,7 +67,7 @@ export class PrismaUserRepository implements usersRepository{
         status:'hipertenso' 
       }
     })
-    console.log(usersWithHiper)
+
     return usersWithHiper
   }
   async findPacientWithDiabetCount(){

@@ -11,17 +11,20 @@ interface FetchUsersByProvinceRequest{
 
 interface FetchUsersByProvinceResponse{
     user:User[]
+    totalCount:number
 }
 
 export class FetchUsersByProvinceUseCase{
     
     constructor (private usersRepository:usersRepository){}
-    async execute({municipality,nip,province,unidade,page}:FetchUsersByProvinceRequest):Promise<FetchUsersByProvinceResponse>{
+    async execute({municipality,nip,province,unidade,page,}:FetchUsersByProvinceRequest):Promise<FetchUsersByProvinceResponse>{
       
-            const user  = await this.usersRepository.findUsersFilters(province,municipality,unidade,nip)
-         
-          
+            const user  = await this.usersRepository.findUsersFilters(province,municipality,unidade,nip,page)
+            const totalCount = await this.usersRepository.findTotalPacientCount()
+             console.log(totalCount)
             return{
+
+               totalCount,
                 user
             }
     }

@@ -23,8 +23,8 @@ model User {
   born_at           DateTime
   province          String
   municipality      String?
-  distrit           String?
- unidade       String?
+  patente           String?
+  unidade           String?
   phone             String?
   updated_at        DateTime       @default(now())
   created_at        DateTime       @default(now())

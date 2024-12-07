@@ -21,6 +21,6 @@ export async function UserRoutes(app:FastifyInstance){
     app.get('/users/techician/:role',techician)
     app.delete('/users/delete/:id',Delete)
     app.get('/users/metrics',GetPacientMetrics)
-    app.get('/users/province/:province=province & municipality=municipality & unidade=unidade',fetchby)
+    app.get('/users/province/:province=province & municipality=municipality & unidade=unidade &page=page',fetchby)
 
 }

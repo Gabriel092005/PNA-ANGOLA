@@ -18,12 +18,12 @@ export async function Register(req:FastifyRequest,res:FastifyReply){
         born_at:z.string(),
         unit:z.string().optional(),
         municipality:z.string().optional(),
-        distrit:z.string().optional(),
+        patente:z.string().optional(),
         image_path:z.string().nullable(),
       
 
     })
-    const {image_path,status,name,born_at,email,nip,phone,distrit,municipality,province,unit,bi} = RegisterBodySchema.parse(req.body)
+    const {image_path,status,name,born_at,email,nip,phone,patente,municipality,province,unit,bi} = RegisterBodySchema.parse(req.body)
 
 
     try {
@@ -38,7 +38,7 @@ export async function Register(req:FastifyRequest,res:FastifyReply){
               status,
               unit,
                bi,
-               distrit,
+               patente,
                municipality,
              province,
              image_path
