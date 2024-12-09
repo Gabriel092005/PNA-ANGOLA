@@ -24,6 +24,7 @@ model User {
   province          String
   municipality      String?
   distrit           String?
+  
  unidade       String?
   phone             String?
   updated_at        DateTime       @default(now())
