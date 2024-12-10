@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('TECNICO', 'ADMIN', 'PACIENTE');
 
+-- CreateEnum
+CREATE TYPE "STATUS_NOW" AS ENUM ('NORMAL', 'GOOD', 'BAD');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
@@ -11,6 +14,7 @@ CREATE TABLE "users" (
     "nip" TEXT,
     "born_at" TIMESTAMP(3) NOT NULL,
     "province" TEXT NOT NULL,
+    "isAlive" BOOLEAN NOT NULL DEFAULT false,
     "municipality" TEXT,
     "patente" TEXT,
     "unidade" TEXT,
@@ -54,6 +58,7 @@ CREATE TABLE "health_status" (
     "cholesterol" DOUBLE PRECISION NOT NULL,
     "weigth" DOUBLE PRECISION NOT NULL,
     "triglycerides" DOUBLE PRECISION NOT NULL,
+    "status_now" "STATUS_NOW" NOT NULL DEFAULT 'NORMAL',
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "health_status_pkey" PRIMARY KEY ("id")

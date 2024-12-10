@@ -8,7 +8,7 @@ export async function Profile(request:FastifyRequest,reply:FastifyReply) {
 try {
     const getUserProfile = makeGetUserProfileCase()
 
-    const  {user}  = await getUserProfile.execute({
+    const {user}  = await getUserProfile.execute({
       userId : request.user.sub
     })
     console.log(request.user)

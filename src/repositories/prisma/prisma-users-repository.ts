@@ -13,5 +13,6 @@ export interface usersRepository{
     findPacientWithHipertensaoCount():Promise<number>
     findTotalUsers():Promise<number>
     findTotalPacientCount():Promise<number>
+    
     findUsersFilters(province?:string,municipality?:string,unidade?:string,nip?:string,page?:string):Promise<User[]>
 }

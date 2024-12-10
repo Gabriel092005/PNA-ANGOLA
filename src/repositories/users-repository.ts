@@ -131,6 +131,7 @@ async  findAllTechnician(role:string,) {
         const users = await prisma.user.create({
           data
         })
+        
         return users
    }
 

@@ -12,6 +12,11 @@ enum Role {
   ADMIN
   PACIENTE
 }
+enum STATUS_NOW{
+NORMAL
+GOOD
+BAD
+}
 
 model User {
   id                String         @id @default(uuid()) // UUID para identificação única
@@ -22,6 +27,8 @@ model User {
   nip               String?
   born_at           DateTime
   province          String
+  isAlive           Boolean @default(false)
+
   municipality      String?
   patente           String?
   unidade           String?
@@ -70,6 +77,7 @@ model health_status {
   cholesterol    Float
   weigth         Float
   triglycerides  Float
+  status_now     STATUS_NOW @default(NORMAL)
   user           User     @relation(fields: [userId], references: [id])
   userId         String
 }

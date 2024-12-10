@@ -9,11 +9,7 @@ import { techician } from "./fetch-technician";
 import { GetPacientMetrics } from "./pacient-metrics";
 import { fetchby } from "./fetchusersFilters";
 
-
-
-
 export async function UserRoutes(app:FastifyInstance){
-    
     app.post('/users',Register)
     app.post('/users/sessions',Authenticate)
     app.get('/users/fetch/:query=query',Fetch)

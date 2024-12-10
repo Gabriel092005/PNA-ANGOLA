@@ -25,7 +25,7 @@ export async function Register(req:FastifyRequest,res:FastifyReply){
     })
     const {image_path,status,name,born_at,email,nip,phone,patente,municipality,province,unit,bi} = RegisterBodySchema.parse(req.body)
 
-
+            console.log(req.query)
     try {
         const registerUseCase = makeRegisterUseCase()
 

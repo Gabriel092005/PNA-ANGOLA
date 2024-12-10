@@ -27,7 +27,9 @@ interface RegisterUserResponse{
 export class RegisterUserUseCase{
     constructor(private UsersRepository:usersRepository){}
     async execute({image_path,email, born_at,nip,name,phone,status,patente,municipality,bi,province,unit}:RegisterUserRequest):Promise<RegisterUserResponse>{
-        
+          if(!nip){
+
+          }
            const userWithSameNip = await this.UsersRepository.findByNip(nip)
            if(userWithSameNip){
             throw new UserAreadyExistsError()
