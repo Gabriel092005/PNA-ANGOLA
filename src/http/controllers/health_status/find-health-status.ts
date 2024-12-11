@@ -14,7 +14,9 @@ export async function Find(req:FastifyRequest,res:FastifyReply){
             userId
         })
         health_status.map((health_status)=>{
-            return res.status(200).send({health_status})
+            return res.status(200).send(
+           {  health_status}
+            )
         })
     
     }catch{

@@ -30,8 +30,7 @@ model User {
   isAlive           Boolean @default(false)
 
   municipality      String?
-  patente           String?
-  unidade           String?
+
   phone             String?
   updated_at        DateTime       @default(now())
   created_at        DateTime       @default(now())

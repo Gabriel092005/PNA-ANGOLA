@@ -12,7 +12,6 @@ export async function fetch(req:FastifyRequest,res:FastifyReply){
           const  {healthStatus} = await usecase.execute({
             userId
           })
-            
           return res.send({healthStatus})
      } catch (error) {
         
