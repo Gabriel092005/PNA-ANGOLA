@@ -28,7 +28,7 @@ model User {
   born_at           DateTime
   province          String
   isAlive           Boolean @default(false)
-
+  
   municipality      String?
 
   phone             String?
