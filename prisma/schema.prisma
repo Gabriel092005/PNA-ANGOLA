@@ -28,9 +28,9 @@ model User {
   born_at           DateTime
   province          String
   isAlive           Boolean @default(false)
-  
+  unidade           String?
   municipality      String?
-
+  patente           String?
   phone             String?
   updated_at        DateTime       @default(now())
   created_at        DateTime       @default(now())
