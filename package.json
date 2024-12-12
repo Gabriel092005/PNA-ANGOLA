@@ -1,7 +1,7 @@
 {
   "name": "03-api-solid",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.ts",
