@@ -11,8 +11,9 @@ try {
     const {user}  = await getUserProfile.execute({
       userId : request.user.sub
     })
-    console.log(request.user)
-    console.log(request.headers) 
+
+    // console.log(request.user)
+    // console.log(request.headers) 
   
       
         return reply.status(200).send({
