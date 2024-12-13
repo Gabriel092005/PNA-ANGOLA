@@ -26,7 +26,6 @@ app.register(fastifyJwt, {
 });
 
 app.register(cors,{
-  
     origin:'https://pna-frontend-last.onrender.com',
     credentials:true
 })
@@ -39,7 +38,7 @@ app.register(MessagesRoutes);
 app.register(NotifRoutes);
 app.register(GeneratePDFRoutes);
 
-// Manipulador de erros
+
 app.setErrorHandler((err, request, reply) => {
   if (err instanceof ZodError) {
     return reply.status(400).send({

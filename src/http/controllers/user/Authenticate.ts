@@ -12,7 +12,7 @@ export async function Authenticate(request: FastifyRequest, reply: FastifyReply)
     });
 
     const {bi,nip } = AuthenticateBodySchema.parse(request.body);
-    console.log(request.body)
+  
 
     try {
         const authenticateUseCase = makeAuthenticateUseCase();
@@ -26,6 +26,7 @@ export async function Authenticate(request: FastifyRequest, reply: FastifyReply)
             { sign: { sub:user.id } }
         );
         
+        console.log(token)  
 
         const refreshToken = await reply.jwtSign(
             { role: user.role },
