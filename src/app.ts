@@ -26,7 +26,7 @@ app.register(fastifyJwt, {
 });
 
 app.register(cors,{
-    origin:'*',
+    origin:'https://pna-frontend-last.onrender.com/',
     credentials:true
 })
 
