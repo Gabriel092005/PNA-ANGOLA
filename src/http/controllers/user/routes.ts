@@ -8,6 +8,7 @@ import { Delete } from "./delete";
 import { techician } from "./fetch-technician";
 import { GetPacientMetrics } from "./pacient-metrics";
 import { fetchby } from "./fetchusersFilters";
+import { LogOut } from "./log-out";
 
 export async function UserRoutes(app:FastifyInstance){
     app.post('/users',Register)
@@ -17,5 +18,6 @@ export async function UserRoutes(app:FastifyInstance){
     app.get('/users/techician/:role',techician)
     app.delete('/users/delete/:id',Delete)
     app.get('/users/metrics',GetPacientMetrics)
+    app.patch('/users/log-out/:userId',LogOut)
     app.get('/users/province/:province=province & municipality=municipality & unidade=unidade &page=page',fetchby)
 }

@@ -21,12 +21,13 @@ app.register(fastifyJwt, {
     signed: false,
   },
   sign: {
-    expiresIn: '10m',
+    expiresIn: '1d',
   },
 });
 
 app.register(cors,{
     origin:'https://pna-frontend-last.onrender.com',
+    // origin:'http://localhost:5174',
     credentials:true
 })
 

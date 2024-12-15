@@ -1,7 +1,17 @@
-import {Prisma, User } from "@prisma/client";
+import {Prisma} from "@prisma/client";
 import { usersRepository } from "./prisma/prisma-users-repository";
 import { prisma } from "@/lib/prisma";
 export class PrismaUserRepository implements usersRepository{
+ async iSactiveUser(userId: string){
+   const user = await prisma.user.update({
+    where:{
+        id:userId
+    },data:{
+      isAlive:false
+    }
+   })
+       return user
+  }
   
   async findTotalPacientCount(){
     const TotalPacient = await prisma.user.count({where:{role:'PACIENTE'}})
