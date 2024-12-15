@@ -4,16 +4,14 @@ import fastifyJwt from '@fastify/jwt';
 import { ZodError } from 'zod';
 import { env } from './Env';
 import cors from '@fastify/cors';
-
 import { UserRoutes } from './http/controllers/user/routes';
+import fastifyCompress from '@fastify/compress';
 import { HealthRoutes } from './http/controllers/health_status/routes';
 import { MessagesRoutes } from './http/controllers/messages/routes';
 import { NotifRoutes } from './http/controllers/notifications/routes';
 import { GeneratePDFRoutes } from './http/controllers/report/routes';
 
 export const app = fastify();
-
-// Configuração do JWT
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
   cookie: {
@@ -27,12 +25,12 @@ app.register(fastifyJwt, {
 
 app.register(cors,{
     origin:'https://pna-frontend-last.onrender.com',
-    // origin:'http://localhost:5174',
     credentials:true
 })
 
 // Registro de plugins e rotas
 app.register(fastifycookie);
+app.register(fastifyCompress, { global: true });
 app.register(UserRoutes);
 app.register(HealthRoutes);
 app.register(MessagesRoutes);
