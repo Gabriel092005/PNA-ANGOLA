@@ -1,7 +1,17 @@
+
 import { HealthRepository } from "./prisma/prisma-health_status-repository";
 import { prisma } from "@/lib/prisma";
 
 export class PrismaHealthRepository implements HealthRepository{
+  async deleteHealthStatus(Id:string){
+           await prisma.health_status.delete({
+            where:{
+                id:Number(Id)
+            }
+        })
+        return null
+      
+    }
    async fetchUserStatus(userId: string){
      const  health_status = await prisma.health_status.findMany({
         where:{

@@ -7,7 +7,7 @@ import { NotificationsRepository } from "@/repositories/prisma/prisma-notificati
 interface SendMessageUseCaseRequest {
   content: string;
   senderId: string;
-  receiverId: string; // Adicionado o campo receiverId
+  receiverId: string; 
 }
 
 interface SendMessageUseCaseResponse {
