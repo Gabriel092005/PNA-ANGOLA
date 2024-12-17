@@ -5,18 +5,15 @@ import { z } from "zod";
 
 
 export async function Fetch(req:FastifyRequest,res:FastifyReply){
-
     const SearchanyBodySchema = z.object({
-        page:z.string(),
+        page:z.string().optional().default('1'),
         role:z.string().optional(),
         query:z.string().optional()
     })
     const {query,page,role} = SearchanyBodySchema.parse(req.query)
     console.log(query)
     const pageNumber = Number(page);
-    if (isNaN(pageNumber) || pageNumber < 1) {
-      return res.status(400).send({ message: "Invalid page number" });
-    }
+
     try {
         const UseCase = makeFetchUseCase()
 
@@ -25,7 +22,7 @@ export async function Fetch(req:FastifyRequest,res:FastifyReply){
             query:query,
             role:role
         })
-        return res.status(200).send(Users)
+        return res.status(200).send({Users})
     } catch (error) {
         return res.status(409).send({message:error})   
     }

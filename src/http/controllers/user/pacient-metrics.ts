@@ -7,9 +7,11 @@ export async function GetPacientMetrics(req:FastifyRequest,res:FastifyReply){
         
         const usecase = makePacientMetrics()
         const {metrics} = await usecase.execute()
+
         return res.status(200).send({metrics})
         
     } catch (error) {
+        console.error(error)
         
     }
 }
