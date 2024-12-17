@@ -16,7 +16,6 @@ export class PrismaUserRepository implements usersRepository{
   async findTotalPacientCount(){
     const TotalPacient = await prisma.user.count({where:{role:'PACIENTE'}})
     return TotalPacient
-      
   }
  async findUsersFilters(province?: string, municipality?: string, unidade?: string, nip?: string, page?:string) {
    if(!page){
@@ -111,11 +110,11 @@ async  findAllTechnician(role:string,) {
   }
  
  async Searchany(query:string,page:number){
-  console.log(query)
+  
 
 
   const users = await prisma.user.findMany({
-    take: 10, skip:(page-1)*10
+    take: 4, skip:(page-1)*4
   })
 
    if(query){
