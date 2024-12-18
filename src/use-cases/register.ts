@@ -15,8 +15,7 @@ interface RegisterUserRequest{
    born_at:string
    phone:any
    patente:string|undefined
-   image_path:any
- 
+   image_path:string|undefined
 
 }
 
@@ -26,7 +25,7 @@ interface RegisterUserResponse{
 
 export class RegisterUserUseCase{
     constructor(private UsersRepository:usersRepository){}
-    async execute({image_path,email, born_at,nip,name,phone,status,patente,municipality,bi,province,unit}:RegisterUserRequest):Promise<RegisterUserResponse>{
+    async execute({email, born_at,nip,name,phone,status,patente,municipality,bi,province,unit,image_path}:RegisterUserRequest):Promise<RegisterUserResponse>{
           if(!nip){
 
           }
@@ -46,9 +45,7 @@ export class RegisterUserUseCase{
             phone,
             nip,
             status,
-            image_path,
-        
-      
+            image_path:image_path
            }
           
            )   

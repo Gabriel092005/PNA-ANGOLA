@@ -114,7 +114,9 @@ async  findAllTechnician(role:string,) {
 
 
   const users = await prisma.user.findMany({
-    take: 4, skip:(page-1)*4
+    take: 3, skip:(page-1)*3, orderBy:{
+      created_at:'desc'
+    }
   })
 
    if(query){
@@ -125,6 +127,9 @@ async  findAllTechnician(role:string,) {
         contains:query
       }
      },take:2,
+     orderBy:{
+      created_at:'desc'
+     },
      skip:(page-1)*2
     }
     )
@@ -137,9 +142,14 @@ async  findAllTechnician(role:string,) {
     
   }
   async create(data: Prisma.UserCreateInput){
+       
         const users = await prisma.user.create({
           data
         })
+        
+        // if(data.role==='TECNICO'){
+        //    await prisma.user.update({where:{id:users.id},data:{role:'TECNICO'}})
+        // }
         
         return users
    }

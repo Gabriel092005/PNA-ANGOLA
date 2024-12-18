@@ -5,8 +5,7 @@ import { z } from "zod";
 
 
 export async function Register(req:FastifyRequest,res:FastifyReply){
-
-
+    console.log(req.body)
     const RegisterBodySchema = z.object({
         name : z.string(),
         email : z.string().email().optional(),
@@ -19,17 +18,18 @@ export async function Register(req:FastifyRequest,res:FastifyReply){
         unit:z.string().optional(),
         municipality:z.string().optional(),
         patente:z.string().optional(),
-        image_path:z.string().nullable(),
+   
       
 
     })
-    const {image_path,status,name,born_at,email,nip,phone,patente,municipality,province,unit,bi} = RegisterBodySchema.parse(req.body)
+    const {status,name,born_at,email,nip,phone,patente,municipality,province,unit,bi} = RegisterBodySchema.parse(req.body)
+         
 
-            console.log(req.query)
     try {
-        const registerUseCase = makeRegisterUseCase()
+        const registerUseCase =  makeRegisterUseCase()
 
-       const{User} = await registerUseCase.execute({
+
+        const{User} = await registerUseCase.execute({
              name,
              born_at,
              email,
@@ -41,14 +41,15 @@ export async function Register(req:FastifyRequest,res:FastifyReply){
                patente,
                municipality,
              province,
-             image_path
+             image_path:undefined
+            
         })
         return res.status(201).send({User})
-    } catch (error:any) {
+    } catch (error) {
         if(error instanceof  UserAreadyExistsError){
             return res.status(409).send({message:error.message})
         }
-        console.error(error)
+            console.error(error)
         
     }
 

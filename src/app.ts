@@ -11,7 +11,9 @@ import { MessagesRoutes } from './http/controllers/messages/routes';
 import { NotifRoutes } from './http/controllers/notifications/routes';
 import { GeneratePDFRoutes } from './http/controllers/report/routes';
 
+
 export const app = fastify();
+
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
   cookie: {
