@@ -6,43 +6,66 @@ import { z } from "zod";
 
 export async function Register(req:FastifyRequest,res:FastifyReply){
     console.log(req.body)
+
+enum Role {
+  ADMIN ='ADMIN' ,
+  TECNICO='TECNICO',
+  PACIENTE='PACIENTE'
+}
+enum GENDER{
+    MASCULINO = 'MASCULINO',
+    FEMENINO = 'FEMENINO'
+
+}
+enum CLASS {
+    DIABETIC = 'DIABETICO',
+    HYPERTENSIVE='HIPERTENSO'
+    
+}
+enum STATUS {
+    NORMAL='NORMAL',
+    GOOD ='GOOD',
+    BAD='BAD'
+}
     const RegisterBodySchema = z.object({
         name : z.string(),
         email : z.string().email().optional(),
         nip:z.string(),
         province:z.string(),
-        status:z.string().optional(),
+        status:z.enum([STATUS.GOOD,STATUS.NORMAL,STATUS.BAD]).optional(),
         bi:z.string().optional(),
         phone:z.string(),
         born_at:z.string(),
         unit:z.string().optional(),
         municipality:z.string().optional(),
         patente:z.string().optional(),
+        role:z.enum([Role.ADMIN,Role.PACIENTE,Role.TECNICO]),
+        gender:z.enum([GENDER.FEMENINO,GENDER.MASCULINO]),
+        classe:z.enum([CLASS.DIABETIC,CLASS.HYPERTENSIVE])
+        
    
       
 
     })
-    const {status,name,born_at,email,nip,phone,patente,municipality,province,unit,bi} = RegisterBodySchema.parse(req.body)
-         
-
+    const {status,name,born_at,email,nip,phone,patente,municipality,province,unit,bi,gender,role,classe} = RegisterBodySchema.parse(req.body)
     try {
         const registerUseCase =  makeRegisterUseCase()
-
-
         const{User} = await registerUseCase.execute({
              name,
              born_at,
              email,
              nip,
              phone,
-              status,
-              unit,
-               bi,
-               patente,
-               municipality,
+             classe,
+             status,
+             unit,
+             bi,
+             patente,
+             municipality,
              province,
-             image_path:undefined
-            
+             image_path:undefined,
+             gender:gender,
+             role:role 
         })
         return res.status(201).send({User})
     } catch (error) {

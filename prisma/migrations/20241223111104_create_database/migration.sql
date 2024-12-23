@@ -4,17 +4,28 @@ CREATE TYPE "Role" AS ENUM ('TECNICO', 'ADMIN', 'PACIENTE');
 -- CreateEnum
 CREATE TYPE "STATUS_NOW" AS ENUM ('NORMAL', 'GOOD', 'BAD');
 
+-- CreateEnum
+CREATE TYPE "GENDER" AS ENUM ('MASCULINO', 'FEMENINO');
+
+-- CreateEnum
+CREATE TYPE "CLASS" AS ENUM ('HIPERTENSO', 'DIABETICO');
+
+-- CreateEnum
+CREATE TYPE "STATUS" AS ENUM ('NORMAL', 'GOOD', 'BAD');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT,
     "bi" TEXT,
-    "status" TEXT,
+    "status" "STATUS" DEFAULT 'NORMAL',
+    "class" "CLASS" NOT NULL,
     "nip" TEXT,
-    "born_at" TIMESTAMP(3) NOT NULL,
+    "born_at" TEXT,
     "province" TEXT NOT NULL,
     "isAlive" BOOLEAN NOT NULL DEFAULT false,
+    "gender" "GENDER" NOT NULL DEFAULT 'MASCULINO',
     "unidade" TEXT,
     "municipality" TEXT,
     "patente" TEXT,

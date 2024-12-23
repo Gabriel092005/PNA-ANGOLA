@@ -2,10 +2,8 @@ import { usersRepository } from "@/repositories/prisma/prisma-users-repository"
 import { User } from "@prisma/client"
 import { UserAreadyExistsError } from "./erros/user-already-exists"
 
-
 interface RegisterUserRequest{
    name:string,
-   status:string|undefined
    email:string|undefined
    nip:string
    province:string
@@ -16,7 +14,10 @@ interface RegisterUserRequest{
    phone:any
    patente:string|undefined
    image_path:string|undefined
-
+   status :'NORMAL'|'GOOD'|'BAD'|undefined
+   role:'ADMIN'|'TECNICO'|'PACIENTE'
+   gender:'MASCULINO'|'FEMENINO'
+   classe:'DIABETICO'|'HIPERTENSO'
 }
 
 interface RegisterUserResponse{
@@ -25,10 +26,7 @@ interface RegisterUserResponse{
 
 export class RegisterUserUseCase{
     constructor(private UsersRepository:usersRepository){}
-    async execute({email, born_at,nip,name,phone,status,patente,municipality,bi,province,unit,image_path}:RegisterUserRequest):Promise<RegisterUserResponse>{
-          if(!nip){
-
-          }
+    async execute({email,born_at,nip,name,phone,status,patente,municipality,bi,province,unit,image_path,gender,classe,role,}:RegisterUserRequest):Promise<RegisterUserResponse>{
            const userWithSameNip = await this.UsersRepository.findByNip(nip)
            if(userWithSameNip){
             throw new UserAreadyExistsError()
@@ -44,11 +42,13 @@ export class RegisterUserUseCase{
             municipality,
             phone,
             nip,
-            status,
-            image_path:image_path
+            status:status,
+            role:role,
+            gender:gender,
+            image_path:image_path,
+            class:classe
            }
-          
-           )   
+        )   
 
          return{
             User

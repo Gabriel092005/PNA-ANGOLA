@@ -11,9 +11,7 @@ import { MessagesRoutes } from './http/controllers/messages/routes';
 import { NotifRoutes } from './http/controllers/notifications/routes';
 import { GeneratePDFRoutes } from './http/controllers/report/routes';
 
-
 export const app = fastify();
-
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
   cookie: {
@@ -26,8 +24,8 @@ app.register(fastifyJwt, {
 });
 
 app.register(cors,{
-    origin:'https://pna-frontend-last.onrender.com',
-    // origin:'http://localhost:5173',
+    // origin:'https://pna-frontend-last.onrender.com',
+    origin:'http://localhost:5173',
     credentials:true
 })
 
