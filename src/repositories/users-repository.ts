@@ -47,7 +47,7 @@ async filterDataBy(province?:string,municipality?:string,gender?: string){
             const hypertensive = await prisma.user.count({
               where:{class:'HIPERTENSO',role:'PACIENTE',municipality:{contains:municipality}}
             })
-            const totalPacientes = await prisma.user.count({where:{municipality:province,role:'PACIENTE'}})
+            const totalPacientes = await prisma.user.count({where:{municipality:municipality,role:'PACIENTE'}})
             const pacientsRisco = await prisma.user.count({where:{role:'PACIENTE',status:"BAD"}})
             Metrics ={
               diabetico:diabetico,
