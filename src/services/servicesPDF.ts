@@ -47,7 +47,7 @@ export class PdfService {
     const col2X = 250;
     const colWidth = 250;
 
-    // Cabeçalho da tabela (negrito e centralizado)
+
     page.drawText('Indicador', {
       x: col1X,
       y: startY,
@@ -73,30 +73,6 @@ export class PdfService {
       { label: 'Total de Pacientes', value: totalPacientes },
       { label: 'Diabéticos', value: diabetico },
     ];
-
-    // Desenhando as linhas da tabela
-    rows.forEach((row, index) => {
-      const yPosition = tableStartY - index * rowHeight;
-      
-      // Desenhando as células
-      page.drawText(row.label, {
-        x: col1X + 5,
-        y: yPosition,
-        size: contentSize,
-        font: font,
-        color: contentColor,
-      });
-
-      page.drawText(row.value, {
-        x: col2X + 10,
-        y: yPosition,
-        size: contentSize,
-        font: font,
-        color: contentColor,
-      });
-
-
-    });
 
     // Desenhando a borda da tabela
     page.drawRectangle({
