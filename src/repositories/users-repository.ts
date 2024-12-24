@@ -3,11 +3,12 @@ import { QueryProps, usersRepository } from "./prisma/prisma-users-repository";
 import { prisma } from "@/lib/prisma";
 export class PrismaUserRepository implements usersRepository{
   
-  async filterDataBy(province?:string,municipality?:string,gender?: string){
-    
-    console.log('municipio=',municipality)
-    console.log('gender=',gender)
-    console.log('province=',province)
+async filterDataBy(province?:string,municipality?:string,gender?: string){
+
+    console.log('municipio:',municipality)
+    console.log('gender:',gender)
+    console.log('province:',province)
+
     const diabetico  = await prisma.user.count({where:{class:'DIABETICO',role:'PACIENTE'}})
     const hypertensive = await prisma.user.count({where:{class:'HIPERTENSO',role:'PACIENTE'}})
     const pacientsRisco = await prisma.user.count({where:{status:"BAD"}})

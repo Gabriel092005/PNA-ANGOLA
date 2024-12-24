@@ -6,15 +6,19 @@ import { GeneratePdfUseCase } from '@/use-cases/generatePDFGenerate';
 export async function Generate(req: FastifyRequest, res: FastifyReply) {
   try {
     const GeneratePDFBody = z.object({
-      title: z.string(),
-      content: z.string()
+      title: z.string().optional().default('Estatisticas'),
+      diabetico:z.string().default('0'),
+      hipertenso:z.string().default('0'),
+      totalPacients:z.string().default('0'),
+      pacientesRiscos:z.string().default('0')
     });
+    console.log(req.body)
 
-    const { content, title } = GeneratePDFBody.parse(req.body);
+    const { diabetico,hipertenso,pacientesRiscos, title,totalPacients }=GeneratePDFBody.parse(req.body);
     const pdfService = new PdfService();
     const generatePdfUseCase = new GeneratePdfUseCase(pdfService);
     
-    const pdfBuffer = await generatePdfUseCase.execute({ content, title });
+    const pdfBuffer = await generatePdfUseCase.execute({ diabetico,hipertenso,pacientesRiscos,totalPacients, title });
 
 
     if (!pdfBuffer || pdfBuffer.length === 0) {
@@ -26,6 +30,7 @@ export async function Generate(req: FastifyRequest, res: FastifyReply) {
       .header('Content-Type', 'application/pdf')
       .header('Content-Disposition', `inline; filename="${title}.pdf"`)
       .send(pdfBuffer); 
+
   } catch (err: any) {
     console.error('Erro ao gerar o PDF:', err);
     return res.status(500).send({

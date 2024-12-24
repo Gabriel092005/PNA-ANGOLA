@@ -3,8 +3,20 @@ import { PdfService } from "@/services/servicesPDF";
 export class GeneratePdfUseCase {
   constructor(private pdfService: PdfService) {}
 
-  // O método execute agora aguarda a Promise ser resolvida
-  async execute(data: { title: string; content: string }): Promise<Buffer> {
-    return await this.pdfService.generatePdf(data.title, data.content);
+  async execute(data: {
+      title: string;
+      diabetico:string;
+      hipertenso:string;
+      totalPacients:string;
+      pacientesRiscos:string
+
+      ; }): Promise<Buffer> {
+    return await this.pdfService.generatePdf(
+      data.title, 
+      data.diabetico,
+      data.hipertenso,
+      data.pacientesRiscos,
+      data.totalPacients
+    );
   }
 }
