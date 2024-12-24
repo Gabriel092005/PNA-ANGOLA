@@ -1,13 +1,8 @@
-import { PDFDocument, StandardFonts, rgb, cmyk } from 'pdf-lib'; // Importando o cmyk para mais opções de cores
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'; // Importando o rgb para cores
 
 export class PdfService {
-  async generatePdf(
-    title: string,
-    diabetico: string,
-    hipertenso: string,
-    pacientesRiscos: string,
-    totalPacientes: string
-  ) {
+
+  async generatePdf(title: string, diabetico: string, hipertenso: string, pacientesRiscos: string, totalPacientes: string) {
     const pdfDoc = await PDFDocument.create();
     
     const page = pdfDoc.addPage([600, 1000]);
@@ -15,8 +10,8 @@ export class PdfService {
     const { height } = page.getSize();
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-    const titleSize = 28;  // Tamanho do título para destaque
-    const contentSize = 16;  // Tamanho de conteúdo maior
+    const titleSize = 22;  // Aumentamos o tamanho do título para mais destaque
+    const contentSize = 14;  // Tamanho de conteúdo maior
     const titleColor = rgb(0.2, 0.5, 0.8); // Cor azul para o título
     const contentColor = rgb(0, 0, 0); // Cor preta para o conteúdo
 
@@ -28,15 +23,7 @@ export class PdfService {
       day: 'numeric',
     });
 
-    // Capa do PDF
-    page.drawRectangle({
-      x: 0,
-      y: height - 300,
-      width: 600,
-      height: 300,
-      color: cmyk(0.1, 0.3, 0.5, 0),
-    });
-
+    // Título do PDF
     page.drawText(title, {
       x: 50,
       y: height - 60,
@@ -45,6 +32,7 @@ export class PdfService {
       color: titleColor,
     });
 
+    // Data atualj
     page.drawText(`Data: ${currentDate}`, {
       x: 50,
       y: height - 100,
@@ -54,21 +42,13 @@ export class PdfService {
     });
 
     // Início da tabela
-    const startY = height - 200; 
+    const startY = height - 170; 
     const rowHeight = 45;
     const col1X = 50;
     const col2X = 300; // Ajustamos a posição para melhor alinhamento
     const colWidth = 230;
 
     // Cabeçalho da tabela (negrito e centralizado)
-    page.drawRectangle({
-      x: col1X - 5,
-      y: startY + rowHeight - 5,
-      width: colWidth + 150,
-      height: rowHeight + 10,
-      color: rgb(0.9, 0.9, 0.9),
-    });
-
     page.drawText('Indicador', {
       x: col1X + 5,
       y: startY,
@@ -96,23 +76,10 @@ export class PdfService {
       { label: 'Diabéticos', value: diabetico },
     ];
 
-    // Cores alternadas para linhas
-    const rowColors = [rgb(0.9, 0.95, 1), rgb(1, 1, 1)];
-
     // Desenhando as linhas da tabela
     rows.forEach((row, index) => {
       const yPosition = tableStartY - index * rowHeight;
-
-      // Cor da linha
-      const rowColor = rowColors[index % 2];
-      page.drawRectangle({
-        x: col1X - 5,
-        y: yPosition - 5,
-        width: colWidth + 150,
-        height: rowHeight + 10,
-        color: rowColor,
-      });
-
+      
       // Desenhando as células
       page.drawText(row.label, {
         x: col1X + 10,
@@ -129,6 +96,17 @@ export class PdfService {
         font: font,
         color: contentColor,
       });
+    });
+
+    // Desenhando a borda da tabela
+    page.drawRectangle({
+      x: col1X - 5,
+      y: tableStartY + 5,
+      width: colWidth + 150,
+      height: rowHeight * (rows.length + 1),
+      borderColor: rgb(0.8, 0.8, 0.8),
+      borderWidth: 1,
+      opacity: 0.5, // Fazendo a borda mais suave
     });
 
     // Adicionando uma linha de separação após a tabela
