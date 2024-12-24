@@ -8,11 +8,16 @@ export class PrismaUserRepository implements usersRepository{
     console.log('municipio=',municipality)
     console.log('gender=',gender)
     console.log('province=',province)
+    const diabetico  = await prisma.user.count({where:{class:'DIABETICO',role:'PACIENTE'}})
+    const hypertensive = await prisma.user.count({where:{class:'HIPERTENSO',role:'PACIENTE'}})
+    const pacientsRisco = await prisma.user.count({where:{status:"BAD"}})
+    const totalPacientes = await prisma.user.count({where:{role:'PACIENTE'}})
+
     let Metrics = {
-      diabetico:0,
-      hipertenso:0,
-      totalPacientes:0,
-      pacientsRisco:0
+      diabetico:diabetico,
+      hipertenso:hypertensive,
+      totalPacientes:totalPacientes,
+      pacientsRisco:pacientsRisco
     }
     if(province){
       const diabetico  = await prisma.user.count(
@@ -86,7 +91,6 @@ export class PrismaUserRepository implements usersRepository{
               totalPacientes:totalPacientes
              }
           }
-        
         return  Metrics
   }
  async iSactiveUser(userId: string){

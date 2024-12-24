@@ -1,9 +1,9 @@
-import { usersRepository } from "@/repositories/prisma/prisma-users-repository";
+import { QueryProps, usersRepository } from "@/repositories/prisma/prisma-users-repository";
 import { User } from "@prisma/client";
 
 interface FetchUsersUseCaseRequest{
 
-    query:string|undefined
+    query:QueryProps
     role:string|undefined
     page:number
 }
