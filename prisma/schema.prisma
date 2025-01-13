@@ -81,8 +81,8 @@ model messages {
   receiverId String
   sender     User     @relation("sender", fields: [senderId], references: [id])
   receiver   User     @relation("receiver", fields: [receiverId], references: [id])
-
   @@map("messages") // Nome correto da tabela no banco
+  
 }
 
 model health_status {

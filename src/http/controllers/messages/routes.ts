@@ -6,7 +6,7 @@ import { OpenMessages } from "./open-messages";
 
 
 export async function MessagesRoutes(app:FastifyInstance){
-    app.post("/messages/:senderId=senderId & receiverId-receiverId",SendMsg)
+    app.post("/messages",SendMsg)
     app.get("/messages/find-all/:userId",FindAllMessage)
     app.get("/messages/amount/:userId",GetMessagesAmount)
     app.patch("/messages/open/:messageId=messageId & userId=userId",OpenMessages)

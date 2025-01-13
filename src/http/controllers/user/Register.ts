@@ -5,8 +5,6 @@ import { z } from "zod";
 
 
 export async function Register(req:FastifyRequest,res:FastifyReply){
-    console.log(req.body)
-
 enum Role {
   ADMIN ='ADMIN' ,
   TECNICO='TECNICO',
@@ -41,11 +39,7 @@ enum STATUS {
         patente:z.string().optional(),
         role:z.enum([Role.ADMIN,Role.PACIENTE,Role.TECNICO]),
         gender:z.enum([GENDER.FEMENINO,GENDER.MASCULINO]),
-        classe:z.enum([CLASS.DIABETIC,CLASS.HYPERTENSIVE])
-        
-   
-      
-
+        classe:z.enum([CLASS.DIABETIC,CLASS.HYPERTENSIVE])  
     })
     const {status,name,born_at,email,nip,phone,patente,municipality,province,unit,bi,gender,role,classe} = RegisterBodySchema.parse(req.body)
     try {
@@ -67,6 +61,10 @@ enum STATUS {
              gender:gender,
              role:role 
         })
+
+ 
+
+
         return res.status(201).send({User})
     } catch (error) {
         if(error instanceof  UserAreadyExistsError){

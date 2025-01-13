@@ -3,6 +3,33 @@ import { HealthRepository } from "./prisma/prisma-health_status-repository";
 import { prisma } from "@/lib/prisma";
 
 export class PrismaHealthRepository implements HealthRepository{
+   async PacientsWithDiabetics() {
+        const  PacientsWithDiabetics = await prisma.user.groupBy({
+            by:['province'],
+            where:{
+               class:'DIABETICO', AND:{
+                 role:'PACIENTE'
+               }
+            },
+            _count:{
+              id:true
+            }
+      }) 
+      return PacientsWithDiabetics
+    }
+   async totalPacientsPerProvince(){
+        const  totalPacientsPerProvince = await prisma.user.groupBy({
+            by:['province'],
+            where:{
+                role:'PACIENTE'
+            },
+            _count:{
+                id:true
+            }
+           })
+           return totalPacientsPerProvince
+    }
+
   async deleteHealthStatus(Id:string){
            await prisma.health_status.delete({
             where:{

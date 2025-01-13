@@ -10,13 +10,9 @@ export async function Authenticate(request: FastifyRequest, reply: FastifyReply)
         nip:z.string(),
         bi:z.string().optional()
     });
-
     const {bi,nip } = AuthenticateBodySchema.parse(request.body);
-  
-
     try {
         const authenticateUseCase = makeAuthenticateUseCase();
-        
         const { user } = await authenticateUseCase.execute({
          bi,
          nip
@@ -25,9 +21,6 @@ export async function Authenticate(request: FastifyRequest, reply: FastifyReply)
             { role: user.role },
             { sign: { sub:user.id } }
         );
-        
-    
-
         const refreshToken = await reply.jwtSign(
             { role: user.role },
             { sign: {sub: user.id, expiresIn: '7d' } }

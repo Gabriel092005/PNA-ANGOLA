@@ -3,21 +3,17 @@ import { makeSendMessage } from "@/use-cases/factories/make-send-message";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-
 export async function SendMsg(req:FastifyRequest,res:FastifyReply){
     console.log('entrei')
-    const sendMessageQuerySchema = z.object({
-        senderId:z.string(),
-        receiverId:z.string()
-    })
+  
     const sendMessageBodySchema = z.object({
+        senderId:z.string(),
+        receiverId:z.string(),
         content:z.string()
     })
     try {
-        const {content} = sendMessageBodySchema.parse(req.body)
-        const {receiverId,senderId} = sendMessageQuerySchema.parse(req.query)
-
-        console.log(req.query)
+        const {content,receiverId,senderId} = sendMessageBodySchema.parse(req.body)
+        console.log(req.body)
 
         const usecase = makeSendMessage()
         const {message} = await usecase.execute({
