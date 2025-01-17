@@ -32,7 +32,6 @@ enum STATUS {
    GOOD
    BAD
 }
-
 model User {
   id                String         @id @default(uuid()) // UUID para identificação única
   name              String
