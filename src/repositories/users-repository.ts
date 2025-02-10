@@ -1,19 +1,118 @@
-import {Prisma} from "@prisma/client";
+import {Prisma, User} from "@prisma/client";
 import { QueryProps, usersRepository } from "./prisma/prisma-users-repository";
 import { prisma } from "@/lib/prisma";
+
 export class PrismaUserRepository implements usersRepository{
+  async totalAgentInactiveCount() {
+    const count = await prisma.user.count({
+      where:{
+          role:'PACIENTE',AND:{isAlive:false}
+          
+      },
+  })
+  return count
+}
+  async inactiveAgents(page:string|undefined,query:string|undefined){
+    if(query){
+        console.log('query=',query)
+      const user =await prisma.user.findMany({
+        where:{
+             name:query
+            
+        },
+        take:1,
+        // skip:((Number(page)-1)*5)
+      })
+      return user
+    }
+      const user =await prisma.user.findMany({
+        where:{
+            role:'PACIENTE',AND:{isAlive:false}
+            
+        },
+        take:5,
+        skip:((Number(page)-1)*5)
+      })
+      
+      return user
+  }
+ async killPacient(userId: string){
+        console.log()
+         await prisma.user.update({
+          where:{
+            id:userId
+          },data:{
+             isAlive:false
+          }
+        })
+        return null
+  }
+  async findUserAlive(){
+       const womanInactive = await prisma.user.count({
+        where:{
+          role:{equals:'PACIENTE'},AND:{gender:'FEMENINO'}
+        }
+       })
+       const manInactive = await prisma.user.count({where:{role:{equals:'PACIENTE'},AND:{gender:'MASCULINO',isAlive:true}}
+       })
+       const ActiveAgent = await  prisma.user.count({where:{isAlive:true,AND:{role:'PACIENTE'}}})
+
+       const InactiveAgente = await prisma.user.count({where:{role:'PACIENTE',AND:{isAlive:false}}})
+      
+       const IsAliveAgent = {
+
+        Woman:womanInactive,
+        Man:manInactive,
+        Alive:ActiveAgent,
+        NotAlive:InactiveAgente,
+    
+       }
+       return IsAliveAgent
+
+  }
+  async findUserGoodStateCount() {
+       const pacientsBom  = await prisma.user.count({
+        where:{
+              role:'PACIENTE', AND:{status:'GOOD'}
+        }
+       }) 
+       return pacientsBom
+      
+  }
+ async findUserNormalStateCount(){
+  const pacientsNormal  = await prisma.user.count({
+    where:{
+          role:'PACIENTE', AND:{status:'NORMAL'}
+    }
+   })
+   return pacientsNormal
+      
+  }
+  async findTotalTechnitian() {
+    const techician = await prisma.user.count({
+      where:{
+        role:'TECNICO',
+      }
+     })
+     return techician
   
+  }
+
+  async findUserBadStateCount(){
+       const pacientsRisco = await prisma.user.count({
+        where:{
+          role:'PACIENTE', AND:{ status:'BAD'}
+        }
+       })
+       return pacientsRisco
+      
+  }
+
 async filterDataBy(province?:string,municipality?:string,gender?: string){
-
-    console.log('municipio:',municipality)
-    console.log('gender:',gender)
-    console.log('province:',province)
-
     const diabetico  = await prisma.user.count({where:{class:'DIABETICO',role:'PACIENTE'}})
     const hypertensive = await prisma.user.count({where:{class:'HIPERTENSO',role:'PACIENTE'}})
     const pacientsRisco = await prisma.user.count({where:{status:"BAD"}})
     const totalPacientes = await prisma.user.count({where:{role:'PACIENTE'}})
-
     let Metrics = {
       diabetico:diabetico,
       hipertenso:hypertensive,
@@ -125,7 +224,6 @@ async filterDataBy(province?:string,municipality?:string,gender?: string){
                   created_at:'desc'
                 },
                 skip:(parseInt(page)-1)*5
-                
             })
             return users
   }
@@ -157,13 +255,12 @@ async filterDataBy(province?:string,municipality?:string,gender?: string){
         role:'PACIENTE'
       }
      })
-     console.log(TotalPacient)
      return TotalPacient
   }
   async findPacientWithHipertensaoCount(){
     const usersWithHiper = await prisma.user.count({
       where:{
-        class:'HIPERTENSO' 
+        class:'HIPERTENSO', AND:{role:'PACIENTE'}
       }
     })
 
@@ -172,21 +269,36 @@ async filterDataBy(province?:string,municipality?:string,gender?: string){
   async findPacientWithDiabetCount(){
       const usersWithDiabet = await prisma.user.count({
         where:{
-          class:'DIABETICO'
+          class:'DIABETICO', AND:{role:'PACIENTE'}
         }
       })
       return usersWithDiabet
   }
-async  findAllTechnician(role:string,) {
+async  findAllTechnician(province?:string,unidade?:string,municipality?:string,page?:string) {
+
+  console.log('province-repo:',province)  
+  console.log('municipality:',municipality)  
+  console.log('unidade:',unidade)  
+  console.log('page:',page)  
+
+
+
       const users = await prisma.user.findMany({
         where:{
-           role:{
-            equals:'TECNICO'
-           }
-        },take:10,
-        
-      })
-      return users   
+          ...({province:{contains:province}}),
+          ...(municipality && {municipality:{contains:municipality}}),
+          ...(unidade && {unidade:{contains:unidade}}),
+          ...({role:{equals:"TECNICO"}})
+        },take:5,
+        include: {
+            
+        },
+        orderBy:{
+          created_at:'desc'
+        },
+        // skip:((Number(page))-1)*5
+    })
+    return users
   }
  async remove(id: string){
      await prisma.user.delete({
@@ -251,8 +363,7 @@ async  findAllTechnician(role:string,) {
    return users
   }
   async create(data: Prisma.UserCreateInput){
-       
-        const users = await prisma.user.create({
+       const users = await prisma.user.create({
           data:{
             name:data.name,
             province:data.province,
@@ -278,18 +389,63 @@ async  findAllTechnician(role:string,) {
       const user = await prisma.user.findFirst({
         where:{
             nip
-        }
+        },
+    
       })
       return user
+    }
+    async findById(id: string) {
       
-    }
-   async  findById(id: string){
-      const users = await prisma.user.findFirst({
-        where:{
-            id
-        }
-      })
-      return users
+      const user = await prisma.user.findFirst({
+        where: {
+          id,
+        },
+        include: {
+          _count:true,
+          notification:{
+            select:{
+              id:true,
+              userSenderName:true,
+              content:true,
+              created_at:true,
+              userId:true,
+              status:true, 
 
+              user:{
+                select:{
+                  name:true
+                }
+              }
+            },orderBy:{
+              created_at:'desc'
+
+            }
+          },
+
+          received_messages: {
+            include:{
+                sender:{
+                  select:{
+                    name:true 
+                    
+                  }
+                }
+            },
+
+            take:5,
+       
+            // ...(province && {province:{contains:province}}),
+
+            orderBy:{
+              send_at:'desc'
+            }
+          },  // Supondo que a relação seja chamada 'messagesReceived'
+          
+        },
+      
+      });
+      
+      return user;
     }
+    
 }

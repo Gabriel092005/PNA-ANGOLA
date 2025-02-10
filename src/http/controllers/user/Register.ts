@@ -42,8 +42,9 @@ enum STATUS {
         classe:z.enum([CLASS.DIABETIC,CLASS.HYPERTENSIVE])  
     })
     const {status,name,born_at,email,nip,phone,patente,municipality,province,unit,bi,gender,role,classe} = RegisterBodySchema.parse(req.body)
+    console.log(req.body)
     try {
-        const registerUseCase =  makeRegisterUseCase()
+        const registerUseCase = await  makeRegisterUseCase()
         const{User} = await registerUseCase.execute({
              name,
              born_at,

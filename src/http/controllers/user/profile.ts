@@ -1,10 +1,9 @@
 
 import { makeGetUserProfileCase } from "@/use-cases/factories/make-get-user-Profile";
 import { FastifyRequest,FastifyReply } from "fastify";
+import { z } from "zod";
 
 export async function Profile(request:FastifyRequest,reply:FastifyReply) {
-
-
 
 try {
 

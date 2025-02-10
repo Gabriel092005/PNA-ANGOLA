@@ -1,8 +1,9 @@
 import { MessagesRepository } from "@/repositories/prisma/prisma-messages.repository"
-import { usersRepository } from "@/repositories/prisma/prisma-users-repository"
 import { messages } from "@prisma/client"
-import { resourceNotFoundError } from "./erros/resource-not-found-errors"
 
+interface FetchMessagesRequest{
+    query:string|undefined
+}
 
 interface FetchMessagesUserResponse{
     messages:messages[]
@@ -13,10 +14,10 @@ export class FetchMessagesUseCase{
     
     ){}
 
-async execute():Promise<FetchMessagesUserResponse>
+async execute({query}:FetchMessagesRequest):Promise<FetchMessagesUserResponse>
     {
       
-        const messages = await this.messagesRepository.FindAllMessage()
+        const messages = await this.messagesRepository.FindAllMessage(query)
         return {
             messages
         }

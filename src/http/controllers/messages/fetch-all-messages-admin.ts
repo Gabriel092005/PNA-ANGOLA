@@ -3,13 +3,22 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
 
+
 export async function FindAllMessage(req:FastifyRequest, res:FastifyReply){
+    const getMessagesRequestParams  = z.object({
+        query:z.string().optional()
+     })
+
+     const {query} = getMessagesRequestParams.parse(req.query)
+
+     console.log(query)
+
     try {
-        
          const usecase = makeFetchMessages()
-
-         const { messages } = await usecase.execute()
-
+         const { messages } = await usecase.execute({
+            query
+         })
+      
          return res.status(200).send({messages})
 
     } catch (error) {

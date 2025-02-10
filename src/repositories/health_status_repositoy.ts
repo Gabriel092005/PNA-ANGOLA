@@ -75,7 +75,15 @@ export class PrismaHealthRepository implements HealthRepository{
                 }
             }
           })
-          if((blood_glucose=100 )){
+          if((blood_glucose>150)){
+            
+            await prisma.user.update({
+                where:{
+                    id:userId
+                },data:{
+                    status:'BAD'
+                }
+            })
             await prisma.health_status.update({
                 where:{  
                     id:health_status.id

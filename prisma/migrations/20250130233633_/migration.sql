@@ -52,6 +52,7 @@ CREATE TABLE "notif" (
 CREATE TABLE "messages" (
     "id" SERIAL NOT NULL,
     "content" TEXT NOT NULL,
+    "subject" TEXT NOT NULL,
     "send_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "senderId" TEXT NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT false,

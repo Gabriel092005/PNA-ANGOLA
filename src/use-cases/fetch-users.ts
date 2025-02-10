@@ -3,7 +3,7 @@ import { User } from "@prisma/client";
 
 interface FetchUsersUseCaseRequest{
 
-    query:QueryProps
+    query:string|undefined
     role:string|undefined
     page:number
 }

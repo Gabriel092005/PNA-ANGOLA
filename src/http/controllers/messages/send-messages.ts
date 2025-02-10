@@ -4,22 +4,24 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
 export async function SendMsg(req:FastifyRequest,res:FastifyReply){
-    console.log('entrei')
-  
+    
+    console.log(req.body)
     const sendMessageBodySchema = z.object({
         senderId:z.string(),
         receiverId:z.string(),
+        subject:z.string(),
         content:z.string()
     })
     try {
-        const {content,receiverId,senderId} = sendMessageBodySchema.parse(req.body)
-        console.log(req.body)
+        const {content,receiverId,senderId,subject} = sendMessageBodySchema.parse(req.body)
+        
 
         const usecase = makeSendMessage()
         const {message} = await usecase.execute({
             content,
             receiverId,
-            senderId
+            senderId,
+            subject
         })
         return res.status(200).send({message})
     } catch (error) {

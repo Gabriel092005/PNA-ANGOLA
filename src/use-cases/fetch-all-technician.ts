@@ -1,21 +1,40 @@
 import { usersRepository } from "@/repositories/prisma/prisma-users-repository"
 import { User } from "@prisma/client"
 
+interface meta{
+    totalcount: number
+    perPage:number
+    PageIndex:number
+}
+
 interface fetchUsersTechnicianRequest{
-    role:string
+        province:string|undefined
+        municipality :string|undefined
+        unidade :string|undefined
+        page?:string
 }
 
 interface fetchUsersTechnicianResponse{
     user:User[]
+    meta:meta
+    
 }
 
 export class fetchUsersTechnicianUseCase{
     constructor (private usersRepository:usersRepository){}
 
-    async execute({role}:fetchUsersTechnicianRequest):Promise<fetchUsersTechnicianResponse>{
-        const user = await this.usersRepository.findAllTechnician(role)
+    async execute({municipality,province,unidade,page}:fetchUsersTechnicianRequest):Promise<fetchUsersTechnicianResponse>{
+        
+        const totalcount = await this.usersRepository.findTotalTechnitian()
+        
+        const user = await this.usersRepository.findAllTechnician(province,unidade,municipality,page)
         return{
-            user
+            user,
+            meta:{
+                PageIndex:Number(page),
+                perPage:5,
+                totalcount:totalcount
+            }
         }
       
     }

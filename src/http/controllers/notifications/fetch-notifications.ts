@@ -9,16 +9,22 @@ export async function Fetchnotifications(req:FastifyRequest,res:FastifyReply){
     try {
         const FetchShemaParams=z.object({
             userId:z.string()
+         
+        })
+        const FetchShemaQuery=z.object({
+            query:z.string().optional()
         })
 
         console.log(req.params)
 
-        const { userId } = FetchShemaParams.parse(req.params)
+        const { userId} = FetchShemaParams.parse(req.params)
+        const {query} = FetchShemaQuery.parse(req.query)
 
 
         const usecase = await makeFetchAllNotifications()
         const {notification} = await usecase.execute({
-            userId
+            userId,
+            query
         })
         return res.status(200).send({notification})
          

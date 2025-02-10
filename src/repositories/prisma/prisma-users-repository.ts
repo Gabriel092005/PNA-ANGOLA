@@ -12,14 +12,28 @@ export interface QueryProps{
     BAD:'BAD'
 }
 
+interface IsAliveAgent{
+     Woman:number,
+     Man:number,
+     Alive:number,
+     NotAlive:number,
+   
+}
 export interface usersRepository{
-    
+    inactiveAgents(query:string|undefined,page:string|undefined):Promise<User[]>
+    totalAgentInactiveCount():Promise<number>
     findById(id : string|undefined): Promise <User | null> 
+    killPacient(Nip:string):Promise<null>
+    findUserAlive():Promise<IsAliveAgent>
+    findUserBadStateCount():Promise<number>
+    findUserGoodStateCount():Promise<number>
+    findUserNormalStateCount():Promise<number>
     Searchany(query:QueryProps, page:number):Promise<User[] >
     findByNip(nip:string):Promise<User|null>
     create(data:Prisma.UserCreateInput): Promise<User>
     remove(id:string):Promise<null>
-    findAllTechnician(role:string):Promise<User[]>
+    findTotalTechnitian():Promise<number>
+    findAllTechnician(province?:string,municipality?:string,unidade?:string,page?:string):Promise<User[]>
     findPacientWithDiabetCount():Promise<number>
     findPacientWithHipertensaoCount():Promise<number>
     findTotalUsers():Promise<number>

@@ -4,14 +4,15 @@ import { resourceNotFoundError } from "./erros/resource-not-found-errors";
 import { usersRepository } from "@/repositories/prisma/prisma-users-repository";
 import { NotificationsRepository } from "@/repositories/prisma/prisma-notifications-repository";
 
-interface SendMessageUseCaseRequest {
+interface SendMessageUseCaseRequest{
   content: string;
   senderId: string;
+  subject:string
   receiverId: string; 
 }
 
 interface SendMessageUseCaseResponse {
-  message: messages; // Ajustado para singular para representar uma única mensagem
+  message: messages; 
   messageContext:string
 }
 
@@ -27,19 +28,19 @@ export class SendMessageUseCase {
     content,
     senderId,
     receiverId,
+    subject
   }: SendMessageUseCaseRequest): Promise<SendMessageUseCaseResponse> {
 
-    const SenderId = this.usersRepository.findById(senderId)
-    const ReceiverId = this.usersRepository.findById(receiverId)
-
-        const data = await SenderId
-        if(!data){
-           throw new resourceNotFoundError()
-        }
-        const name = data.name
+    const SenderId = await this.usersRepository.findById(senderId)
+    const ReceiverId = await this.usersRepository.findById(receiverId)
+    
+    const userdata =  SenderId
+    if(!receiverId){
+      throw new resourceNotFoundError()
+    }
+    const name = userdata?.name
         const  messageContext = ` O  ${name} enviou-te uma mensagem`
-      this.notificationsRepository.GenerateNotification(receiverId)
-
+        await this.notificationsRepository.GenerateNotification(receiverId,name,messageContext)
     if(!SenderId || !ReceiverId){
         throw new resourceNotFoundError()
     }
@@ -49,13 +50,11 @@ export class SendMessageUseCase {
     if (!receiverId) {
       throw new resourceNotFoundError();
     }
-  console.log(messageContext)
-
-
     const message = await this.messagesRepository.sendMessage(
       content,
       receiverId,
-      senderId
+      senderId,
+      subject
     );
 
     return {
