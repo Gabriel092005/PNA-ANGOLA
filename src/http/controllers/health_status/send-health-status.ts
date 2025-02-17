@@ -8,22 +8,24 @@ export async function save(req:FastifyRequest, res:FastifyReply){
       userId:z.string()
    })
      const SendHealthStatusBodySchema = z.object({
-        blood_pressure:z.string(),
         blood_glucose :z.number(),
         cholesterol :z.number(),
         weigth:z.number(),
-        triglycerides  :z.number()
+        triglycerides  :z.number(),
+        sistolic:z.number(),
+        diastolic:z.number(),
 
      })
      try {
-         const {blood_pressure,blood_glucose,cholesterol,weigth,triglycerides} = SendHealthStatusBodySchema.parse(req.body)
+         const {diastolic,sistolic,blood_glucose,cholesterol,weigth,triglycerides} = SendHealthStatusBodySchema.parse(req.body)
          const {userId} = SendHealthStatusParamasSchema.parse(req.params)
          const usecase =  makeSendHealthStatus()
            console.log(req.body)
          const {health_status} = await usecase.execute({
             
             blood_glucose,
-            blood_pressure:parseInt(blood_pressure),
+            diastolic:Number(diastolic),
+            sistolic:Number(sistolic),
             userId,
             cholesterol,
             weigth,

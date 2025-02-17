@@ -11,6 +11,7 @@ export async function Authenticate(request: FastifyRequest, reply: FastifyReply)
         bi:z.string().optional()
     });
     const {bi,nip } = AuthenticateBodySchema.parse(request.body);
+      console.log(request.body)
     try {
         const authenticateUseCase = makeAuthenticateUseCase();
         const { user } = await authenticateUseCase.execute({
@@ -33,7 +34,7 @@ export async function Authenticate(request: FastifyRequest, reply: FastifyReply)
                 sameSite:'none'
             })
             .status(200)
-            .send({ token });
+            .send({ token});
 
     } catch (error) {
    

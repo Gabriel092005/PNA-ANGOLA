@@ -421,6 +421,7 @@ async  findAllTechnician(province?:string,unidade?:string,municipality?:string,p
 
             }
           },
+          sent_messages:true,
 
           received_messages: {
             include:{

@@ -93,7 +93,8 @@ model messages {
 model health_status {
   id             Int      @id @default(autoincrement())
   created_at     DateTime @default(now())
-  blood_pressure Float
+  sistolic Float @default(0)
+  diastolic Float @default(0)
   blood_glucose  Float
   cholesterol    Float
   weigth         Float

@@ -20,6 +20,7 @@ import { health_status } from "@prisma/client";
   export interface HealthRepository {
     findUserHealthStatus(userId:string):Promise<health_status[]>
     fetchUserStatus(userId:string):Promise<health_status[]>
+    GetHealthStatusOne(userId:string):Promise<health_status[]>
     deleteHealthStatus(Id:string):Promise<null>
     totalPacientsPerProvince():Promise<totalPacientsPerProvince[]>
     PacientsWithDiabetics():Promise<PacientsWithDiabetics[]>
